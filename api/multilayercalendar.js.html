@@ -1,0 +1,910 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: multilayercalendar   multilayercalendar.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1248945841.55" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1248945841.55" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1248945841.55"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1248945841.55"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://blargon.net/" title="blargon">blargon</a></h1>
+        <h3>multilayercalendar&nbsp; <span class="subtitle">0.2</span></h3>
+        <a href="./index.html" title="blargon">blargon</a> 
+            &gt; <a href="./module_multilayercalendar.html" title="multilayercalendar">multilayercalendar</a>
+                
+                 &gt; multilayercalendar.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight"><pre><span class="c">/**</span>
+<span class="c">* The multi-layer calendar provides year and decade navigation layers</span>
+<span class="c">* on top of standard month display.</span>
+<span class="c">* </span>
+<span class="c">* @module multilayercalendar</span>
+<span class="c">* @requires yahoo, dom, event, animation, calendar</span>
+<span class="c">*/</span>
+<span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">Lang</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">lang</span><span class="o">,</span>
+		<span class="nx">Dom</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">Dom</span><span class="o">,</span>
+		<span class="nx">Event</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">Event</span><span class="o">,</span>
+		<span class="nx">Anim</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">Anim</span><span class="o">,</span>
+		<span class="nx">Easing</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">Easing</span><span class="o">,</span>
+		<span class="nx">Calendar</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">widget</span><span class="p">.</span><span class="nx">Calendar</span><span class="o">;</span>
+	
+	<span class="c">/**</span>
+<span class="c">	* The MultiLayerCalendar class implements the multi-layer calendar.</span>
+<span class="c">	* @namespace YAHOO.BLARGON.widget</span>
+<span class="c">	* @class MultiLayerCalendar</span>
+<span class="c">	* @extends YAHOO.widget.Calendar</span>
+<span class="c">	* @constructor</span>
+<span class="c">	* @param {String | HTMLElement} ctr HTML container element</span>
+<span class="c">	* @param {Object} cfg Configuration attributes</span>
+<span class="c">	*/</span>
+	<span class="kd">function</span> <span class="nx">MultiLayerCalendar</span><span class="p">(</span><span class="nx">ctr</span><span class="o">,</span> <span class="nx">cfg</span><span class="p">)</span> <span class="p">{</span>
+		<span class="c">// Disable CalendarNavigator</span>
+		<span class="nx">cfg</span> <span class="o">=</span> <span class="nx">Lang</span><span class="p">.</span><span class="nx">merge</span><span class="p">(</span><span class="nx">cfg</span> <span class="o">||</span> <span class="p">{}</span><span class="o">,</span> <span class="p">{</span> <span class="nx">navigator</span><span class="o">:</span> <span class="kc">false</span> <span class="p">});</span>
+		
+		<span class="c">// Call parent constructor</span>
+		<span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">ctr</span><span class="o">,</span> <span class="nx">cfg</span><span class="p">);</span>
+		
+		<span class="c">/**</span>
+<span class="c">		* Layer container DOM references</span>
+<span class="c">		* @property _layers</span>
+<span class="c">		* @private</span>
+<span class="c">		* @type Object</span>
+<span class="c">		*/</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_layers</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="nx">year</span><span class="o">:</span> <span class="kc">null</span><span class="o">,</span>
+			<span class="nx">decade</span><span class="o">:</span> <span class="kc">null</span>
+		<span class="p">};</span>
+		
+		<span class="c">/**</span>
+<span class="c">		* Current layer</span>
+<span class="c">		* @property _layer</span>
+<span class="c">		* @private</span>
+<span class="c">		* @type Number</span>
+<span class="c">		*/</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_layer</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_INITIAL</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+		
+		<span class="c">/**</span>
+<span class="c">		* Temporarily prevents hover state on layer cells (see _onMonthCellClick)</span>
+<span class="c">		* @property _nohover</span>
+<span class="c">		* @private</span>
+<span class="c">		* @type Boolean</span>
+<span class="c">		*/</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_nohover</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+	<span class="p">}</span>
+	
+	<span class="c">/**</span>
+<span class="c">	* Layer constants</span>
+<span class="c">	* @property _LAYERS</span>
+<span class="c">	* @private</span>
+<span class="c">	* @static</span>
+<span class="c">	* @final</span>
+<span class="c">	* @type Object</span>
+<span class="c">	*/</span>
+	<span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">_LAYERS</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="nx">MONTH</span><span class="o">:</span> <span class="mi">0</span><span class="o">,</span>
+		<span class="nx">YEAR</span><span class="o">:</span> <span class="mi">1</span><span class="o">,</span>
+		<span class="nx">DECADE</span><span class="o">:</span> <span class="mi">2</span>
+	<span class="p">};</span>
+	
+	<span class="c">/**</span>
+<span class="c">	* HTML classes</span>
+<span class="c">	* @property _CLASSES</span>
+<span class="c">	* @private</span>
+<span class="c">	* @static</span>
+<span class="c">	* @final</span>
+<span class="c">	* @type Object</span>
+<span class="c">	*/</span>
+	<span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">_CLASSES</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="nx">UP_LINK</span><span class="o">:</span> <span class="s1">&#39;uplink&#39;</span><span class="o">,</span>
+		<span class="nx">TOP_UP_LINK</span><span class="o">:</span> <span class="s1">&#39;topuplink&#39;</span><span class="o">,</span>
+		<span class="nx">LAYER</span><span class="o">:</span> <span class="s1">&#39;layer&#39;</span><span class="o">,</span>
+		<span class="nx">YEAR_LAYER</span><span class="o">:</span> <span class="s1">&#39;year&#39;</span><span class="o">,</span>
+		<span class="nx">YEAR_TABLE</span><span class="o">:</span> <span class="s1">&#39;year&#39;</span><span class="o">,</span>
+		<span class="nx">MONTH_CELL</span><span class="o">:</span> <span class="s1">&#39;month&#39;</span><span class="o">,</span>
+		<span class="nx">THIS_MONTH_CELL</span><span class="o">:</span> <span class="s1">&#39;current&#39;</span><span class="o">,</span>
+		<span class="nx">DECADE_LAYER</span><span class="o">:</span> <span class="s1">&#39;decade&#39;</span><span class="o">,</span>
+		<span class="nx">DECADE_TABLE</span><span class="o">:</span> <span class="s1">&#39;decade&#39;</span><span class="o">,</span>
+		<span class="nx">YEAR_CELL</span><span class="o">:</span> <span class="s1">&#39;year&#39;</span><span class="o">,</span>
+		<span class="nx">THIS_YEAR_CELL</span><span class="o">:</span> <span class="s1">&#39;current&#39;</span><span class="o">,</span>
+		<span class="nx">OOD_CELL</span><span class="o">:</span> <span class="s1">&#39;ood&#39;</span><span class="o">,</span>
+		<span class="nx">HOVER_CELL</span><span class="o">:</span> <span class="s1">&#39;hover&#39;</span>
+	<span class="p">};</span>
+	
+	<span class="c">/**</span>
+<span class="c">	* Default configuration values</span>
+<span class="c">	* @property _CONFIG_DEFAULTS</span>
+<span class="c">	* @private</span>
+<span class="c">	* @static</span>
+<span class="c">	* @final</span>
+<span class="c">	* @type Object</span>
+<span class="c">	*/</span>
+	<span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">_CONFIG_DEFAULTS</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="nx">LAYER_INITIAL</span><span class="o">:</span> <span class="p">{</span> <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;layer_initial&#39;</span><span class="o">,</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">MONTH</span> <span class="p">}</span><span class="o">,</span>
+		<span class="nx">LAYER_ZINDEX_BASE</span><span class="o">:</span> <span class="p">{</span> <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;layer_zindex_base&#39;</span><span class="o">,</span> <span class="nx">value</span><span class="o">:</span> <span class="mi">10</span> <span class="p">}</span><span class="o">,</span>
+		<span class="nx">LAYER_WIDTH_ADJUST</span><span class="o">:</span> <span class="p">{</span> <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;layer_width_adjust&#39;</span><span class="o">,</span> <span class="nx">value</span><span class="o">:</span> <span class="mi">1</span> <span class="p">}</span><span class="o">,</span>
+		<span class="nx">LAYER_HEIGHT_ADJUST</span><span class="o">:</span> <span class="p">{</span> <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;layer_height_adjust&#39;</span><span class="o">,</span> <span class="nx">value</span><span class="o">:</span> <span class="mi">1</span> <span class="p">}</span><span class="o">,</span>
+		<span class="nx">LAYER_FADING</span><span class="o">:</span> <span class="p">{</span> <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;layer_fading&#39;</span><span class="o">,</span> <span class="nx">value</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}</span><span class="o">,</span>
+		<span class="nx">LAYER_FADE_DURATION</span><span class="o">:</span> <span class="p">{</span> <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;layer_fade_duration&#39;</span><span class="o">,</span> <span class="nx">value</span><span class="o">:</span> <span class="mf">0.2</span> <span class="p">}</span>
+	<span class="p">};</span>
+	
+	<span class="kd">var</span> <span class="nx">_LAYERS</span> <span class="o">=</span> <span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">_LAYERS</span><span class="o">,</span>
+		<span class="nx">_CLASSES</span> <span class="o">=</span> <span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">_CLASSES</span><span class="o">,</span>
+		<span class="nx">_CONFIG</span> <span class="o">=</span> <span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">_CONFIG_DEFAULTS</span><span class="o">;</span>
+	
+	<span class="c">/**</span>
+<span class="c">	* Month layer</span>
+<span class="c">	* @property LAYER_MONTH</span>
+<span class="c">	* @static</span>
+<span class="c">	* @final</span>
+<span class="c">	* @type Number</span>
+<span class="c">	*/</span>
+	<span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">LAYER_MONTH</span> <span class="o">=</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">MONTH</span><span class="o">;</span>
+	
+	<span class="c">/**</span>
+<span class="c">	* Year layer</span>
+<span class="c">	* @property LAYER_YEAR</span>
+<span class="c">	* @static</span>
+<span class="c">	* @final</span>
+<span class="c">	* @type Number</span>
+<span class="c">	*/</span>
+	<span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">LAYER_YEAR</span> <span class="o">=</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">YEAR</span><span class="o">;</span>
+	
+	<span class="c">/**</span>
+<span class="c">	* Decade layer</span>
+<span class="c">	* @property LAYER_DECADE</span>
+<span class="c">	* @static</span>
+<span class="c">	* @final</span>
+<span class="c">	* @type Number</span>
+<span class="c">	*/</span>
+	<span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">LAYER_DECADE</span> <span class="o">=</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">DECADE</span><span class="o">;</span>
+	
+	<span class="c">/**</span>
+<span class="c">	* Validates layer value</span>
+<span class="c">	* @method checkLayer</span>
+<span class="c">	* @static</span>
+<span class="c">	* @param {Number} v Value</span>
+<span class="c">	* @return {Boolean} True if valid layer value, false otherwise</span>
+<span class="c">	*/</span>
+	<span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">checkLayer</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="p">((</span><span class="o">!</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">MONTH</span> <span class="o">&lt;=</span> <span class="nx">v</span> <span class="o">&amp;&amp;</span> <span class="nx">v</span> <span class="o">&lt;=</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">DECADE</span><span class="p">);</span>
+	<span class="p">};</span>
+	
+	<span class="nx">Lang</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MultiLayerCalendar</span><span class="o">,</span> <span class="nx">Calendar</span><span class="o">,</span>
+		<span class="p">{</span>
+			<span class="c">/**</span>
+<span class="c">			* Sets up configuration attributes</span>
+<span class="c">			* @method setupConfig</span>
+<span class="c">			*/</span>
+			<span class="nx">setupConfig</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="c">// Call parent method</span>
+				<span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">setupConfig</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+				
+				<span class="kd">var</span> <span class="nx">cfg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="o">;</span>
+				
+				<span class="c">/**</span>
+<span class="c">				* Initial layer to display on first render</span>
+<span class="c">				* @config layer_initial</span>
+<span class="c">				* @type Number</span>
+<span class="c">				* @default MultiLayerCalendar.LAYER_MONTH</span>
+<span class="c">				*/</span>
+				<span class="nx">cfg</span><span class="p">.</span><span class="nx">addProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_INITIAL</span><span class="p">.</span><span class="nx">key</span><span class="o">,</span> <span class="p">{</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_INITIAL</span><span class="p">.</span><span class="nx">value</span><span class="o">,</span> <span class="nx">validator</span><span class="o">:</span> <span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">checkLayer</span> <span class="p">});</span>
+				
+				<span class="c">/**</span>
+<span class="c">				* Layer base z-index in stacking context of container</span>
+<span class="c">				* @config layer_zindex_base</span>
+<span class="c">				* @type Number</span>
+<span class="c">				* @default 10</span>
+<span class="c">				*/</span>
+				<span class="nx">cfg</span><span class="p">.</span><span class="nx">addProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_ZINDEX_BASE</span><span class="p">.</span><span class="nx">key</span><span class="o">,</span> <span class="p">{</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_ZINDEX_BASE</span><span class="p">.</span><span class="nx">value</span><span class="o">,</span> <span class="nx">validator</span><span class="o">:</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">checkNumber</span> <span class="p">});</span>
+				
+				<span class="c">/**</span>
+<span class="c">				* Layer width adjustment. This increases or decreases the automatically</span>
+<span class="c">				* computed layer width by twice the specified number of pixels. Useful</span>
+<span class="c">				* for cross-browser adjustments or if stylization of the month table or</span>
+<span class="c">				* table cells includes larger borders.</span>
+<span class="c">				* @config layer_width_adjust</span>
+<span class="c">				* @type Number</span>
+<span class="c">				* @default 1</span>
+<span class="c">				*/</span>
+				<span class="nx">cfg</span><span class="p">.</span><span class="nx">addProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_WIDTH_ADJUST</span><span class="p">.</span><span class="nx">key</span><span class="o">,</span> <span class="p">{</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_WIDTH_ADJUST</span><span class="p">.</span><span class="nx">value</span><span class="o">,</span> <span class="nx">validator</span><span class="o">:</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">checkNumber</span> <span class="p">});</span>
+				
+				<span class="c">/**</span>
+<span class="c">				* Layer height adjustment. This increases or decreases the automatically</span>
+<span class="c">				* computed layer height by twice the specified number of pixels. Useful</span>
+<span class="c">				* for cross-browser adjustments or if stylization of the month table or</span>
+<span class="c">				* table cells includes larger borders.</span>
+<span class="c">				* @config layer_height_adjust</span>
+<span class="c">				* @type Number</span>
+<span class="c">				* @default 1</span>
+<span class="c">				*/</span>
+				<span class="nx">cfg</span><span class="p">.</span><span class="nx">addProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_HEIGHT_ADJUST</span><span class="p">.</span><span class="nx">key</span><span class="o">,</span> <span class="p">{</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_HEIGHT_ADJUST</span><span class="p">.</span><span class="nx">value</span><span class="o">,</span> <span class="nx">validator</span><span class="o">:</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">checkNumber</span> <span class="p">});</span>
+				
+				<span class="c">/**</span>
+<span class="c">				* Enables or disables animated fading of layers</span>
+<span class="c">				* @config layer_fading</span>
+<span class="c">				* @type Boolean</span>
+<span class="c">				* @default true</span>
+<span class="c">				*/</span>
+				<span class="nx">cfg</span><span class="p">.</span><span class="nx">addProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_FADING</span><span class="p">.</span><span class="nx">key</span><span class="o">,</span> <span class="p">{</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_FADING</span><span class="p">.</span><span class="nx">value</span><span class="o">,</span> <span class="nx">validator</span><span class="o">:</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">checkBoolean</span> <span class="p">});</span>
+				
+				<span class="c">/**</span>
+<span class="c">				* Layer fade duration in seconds</span>
+<span class="c">				* @config layer_fade_duration</span>
+<span class="c">				* @type Number</span>
+<span class="c">				* @default 0.2</span>
+<span class="c">				*/</span>
+				<span class="nx">cfg</span><span class="p">.</span><span class="nx">addProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_FADE_DURATION</span><span class="p">.</span><span class="nx">key</span><span class="o">,</span> <span class="p">{</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_FADE_DURATION</span><span class="p">.</span><span class="nx">value</span><span class="o">,</span> <span class="nx">validator</span><span class="o">:</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">checkNumber</span> <span class="p">});</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Sets up custom events</span>
+<span class="c">			* @method initEvents</span>
+<span class="c">			*/</span>
+			<span class="nx">initEvents</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="c">// Call parent method</span>
+				<span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">initEvents</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+				
+				<span class="k">this</span><span class="p">.</span><span class="nx">renderEvent</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_onRender</span><span class="o">,</span> <span class="k">this</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Dynamically calculates frame for layer containers</span>
+<span class="c">			* @method _getLayerFrame</span>
+<span class="c">			* @private</span>
+<span class="c">			* @returns {Object} Frame with left, top, width, height values</span>
+<span class="c">			*/</span>
+			<span class="nx">_getLayerFrame</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">table</span> <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">header</span> <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">Calendar</span><span class="p">.</span><span class="nx">_STYLES</span><span class="p">.</span><span class="nx">CSS_HEADER_TEXT</span><span class="o">,</span> <span class="s1">&#39;th&#39;</span><span class="o">,</span> <span class="nx">table</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">,</span>
+					<span class="nx">rgnTable</span> <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">getRegion</span><span class="p">(</span><span class="nx">table</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">rgnHeader</span> <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">getRegion</span><span class="p">(</span><span class="nx">header</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">pyHeader</span> <span class="o">=</span> <span class="nx">rgnHeader</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">rgnHeader</span><span class="p">.</span><span class="nx">top</span><span class="o">,</span>
+					<span class="nx">cfg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="o">,</span>
+					<span class="nx">pxAdjust</span> <span class="o">=</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_WIDTH_ADJUST</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">pyAdjust</span> <span class="o">=</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_HEIGHT_ADJUST</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">frame</span> <span class="o">=</span> <span class="p">{};</span>
+				
+				<span class="nx">frame</span><span class="p">.</span><span class="nx">left</span> <span class="o">=</span> <span class="nx">rgnTable</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="nx">pxAdjust</span><span class="o">;</span>
+				<span class="nx">frame</span><span class="p">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">rgnTable</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">pyHeader</span> <span class="o">-</span> <span class="nx">pyAdjust</span><span class="o">;</span>
+				<span class="nx">frame</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">rgnTable</span><span class="p">.</span><span class="nx">right</span> <span class="o">-</span> <span class="nx">rgnTable</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="nx">pxAdjust</span><span class="o">;</span>
+				<span class="nx">frame</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">rgnTable</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">rgnTable</span><span class="p">.</span><span class="nx">top</span> <span class="o">-</span> <span class="nx">pyHeader</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="nx">pyAdjust</span><span class="o">;</span>
+				
+				<span class="k">return</span> <span class="nx">frame</span><span class="o">;</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Creates new layer container</span>
+<span class="c">			* @method _createLayer</span>
+<span class="c">			* @private</span>
+<span class="c">			* @param {String} classname HTML class name</span>
+<span class="c">			* @param {Object} frame Layer frame</span>
+<span class="c">			* @param {Number} level Layer z-index</span>
+<span class="c">			* @returns {HTMLElement} Layer container element</span>
+<span class="c">			*/</span>
+			<span class="nx">_createLayer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">classname</span><span class="o">,</span> <span class="nx">frame</span><span class="o">,</span> <span class="nx">level</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">layer</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">zIndexBase</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_ZINDEX_BASE</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+				
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">LAYER</span><span class="p">);</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="nx">classname</span><span class="p">);</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="s1">&#39;position&#39;</span><span class="o">,</span> <span class="s1">&#39;absolute&#39;</span><span class="p">);</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="s1">&#39;zIndex&#39;</span><span class="o">,</span> <span class="nx">zIndexBase</span> <span class="o">+</span> <span class="p">(</span><span class="nx">level</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="s1">&#39;visibility&#39;</span><span class="o">,</span> <span class="p">(</span><span class="nx">level</span> <span class="o">&lt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;visible&#39;</span> <span class="o">:</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
+				
+				<span class="k">return</span> <span class="nx">layer</span><span class="o">;</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Generates HTML for year layer</span>
+<span class="c">			* @method _renderYearLayer</span>
+<span class="c">			* @private</span>
+<span class="c">			* @returns {String} HTML</span>
+<span class="c">			*/</span>
+			<span class="nx">_renderYearLayer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;_renderYearLayer&#39;</span><span class="p">);</span>
+				
+				<span class="kd">var</span> <span class="nx">months</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;MONTHS_SHORT&#39;</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">now</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">thisMonth</span> <span class="o">=</span> <span class="nx">now</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">thisYear</span> <span class="o">=</span> <span class="nx">now</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">pageYear</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;pagedate&#39;</span><span class="p">).</span><span class="nx">getFullYear</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">html</span> <span class="o">=</span> <span class="p">[]</span><span class="o">,</span>
+					<span class="nx">i</span><span class="o">,</span> <span class="nx">j</span><span class="o">,</span> <span class="nx">k</span><span class="o">,</span> <span class="nx">cls</span><span class="o">;</span>
+				
+				<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;table class=&quot;&#39;</span> <span class="o">+</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">YEAR_TABLE</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">;</span>
+				<span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;tr&gt;&#39;</span><span class="o">;</span>
+					<span class="k">for</span><span class="p">(</span><span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="o">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">k</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="nx">i</span> <span class="o">+</span> <span class="nx">j</span><span class="o">;</span>
+						<span class="nx">cls</span> <span class="o">=</span> <span class="p">(</span><span class="nx">k</span> <span class="o">===</span> <span class="nx">thisMonth</span> <span class="o">&amp;&amp;</span> <span class="nx">pageYear</span> <span class="o">===</span> <span class="nx">thisYear</span> <span class="o">?</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">THIS_MONTH_CELL</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+						<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;td class=&quot;&#39;</span> <span class="o">+</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">MONTH_CELL</span> <span class="o">+</span> <span class="s1">&#39; m&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nx">cls</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">months</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&lt;/td&gt;&#39;</span><span class="o">;</span>
+					<span class="p">}</span>
+					<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;/tr&gt;&#39;</span><span class="o">;</span>
+				<span class="p">}</span>
+				<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;/table&gt;&#39;</span><span class="o">;</span>
+				
+				<span class="k">return</span> <span class="nx">html</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Synchronizes year layer (without full render)</span>
+<span class="c">			* @method _syncYearLayer</span>
+<span class="c">			* @private</span>
+<span class="c">			*/</span>
+			<span class="nx">_syncYearLayer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;_syncYearLayer&#39;</span><span class="p">);</span>
+				
+				<span class="kd">var</span> <span class="nx">now</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">thisMonth</span> <span class="o">=</span> <span class="nx">now</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">thisYear</span> <span class="o">=</span> <span class="nx">now</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">pageYear</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;pagedate&#39;</span><span class="p">).</span><span class="nx">getFullYear</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">cells</span> <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">MONTH_CELL</span><span class="o">,</span> <span class="s1">&#39;td&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_layers</span><span class="p">.</span><span class="nx">year</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">i</span><span class="o">,</span> <span class="nx">len</span><span class="o">,</span> <span class="nx">cell</span><span class="o">;</span>
+				
+				<span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">cells</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">cell</span> <span class="o">=</span> <span class="nx">cells</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+					<span class="k">if</span><span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="nx">thisMonth</span> <span class="o">&amp;&amp;</span> <span class="nx">pageYear</span> <span class="o">===</span> <span class="nx">thisYear</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">Dom</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">cell</span><span class="o">,</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">THIS_MONTH_CELL</span><span class="p">);</span>
+					<span class="p">}</span>
+					<span class="k">else</span> <span class="p">{</span>
+						<span class="nx">Dom</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">cell</span><span class="o">,</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">THIS_MONTH_CELL</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Generates HTML for decade layer</span>
+<span class="c">			* @method _renderDecadeLayer</span>
+<span class="c">			* @private</span>
+<span class="c">			* @returns {String} HTML</span>
+<span class="c">			*/</span>
+			<span class="nx">_renderDecadeLayer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;_renderDecadeLayer&#39;</span><span class="p">);</span>
+				
+				<span class="kd">var</span> <span class="nx">now</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">thisYear</span> <span class="o">=</span> <span class="nx">now</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">pageYear</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;pagedate&#39;</span><span class="p">).</span><span class="nx">getFullYear</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">y</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">pageYear</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span>
+					<span class="nx">html</span> <span class="o">=</span> <span class="p">[]</span><span class="o">,</span>
+					<span class="nx">i</span><span class="o">,</span> <span class="nx">j</span><span class="o">,</span> <span class="nx">clsThisYear</span><span class="o">,</span> <span class="nx">clsOOD</span><span class="o">;</span>
+				
+				<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;table class=&quot;&#39;</span> <span class="o">+</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">DECADE_TABLE</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">;</span>
+				<span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;tr&gt;&#39;</span><span class="o">;</span>
+					<span class="k">for</span><span class="p">(</span><span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="o">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">clsThisYear</span> <span class="o">=</span> <span class="p">(</span><span class="nx">y</span> <span class="o">===</span> <span class="nx">thisYear</span> <span class="o">?</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">THIS_YEAR_CELL</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+						<span class="nx">clsOOD</span> <span class="o">=</span> <span class="p">((</span><span class="nx">i</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">j</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="nx">j</span> <span class="o">===</span> <span class="mi">3</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">OOD_CELL</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+						<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;td class=&quot;&#39;</span> <span class="o">+</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">YEAR_CELL</span> <span class="o">+</span> <span class="nx">clsThisYear</span> <span class="o">+</span> <span class="nx">clsOOD</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">y</span><span class="o">++</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&lt;/td&gt;&#39;</span><span class="o">;</span>
+					<span class="p">}</span>
+					<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;/tr&gt;&#39;</span><span class="o">;</span>
+				<span class="p">}</span>
+				<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;/table&gt;&#39;</span><span class="o">;</span>
+				
+				<span class="k">return</span> <span class="nx">html</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Synchronizes decade layer (without full render)</span>
+<span class="c">			* @method _syncDecadeLayer</span>
+<span class="c">			* @private</span>
+<span class="c">			*/</span>
+			<span class="nx">_syncDecadeLayer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;_syncDecadeLayer&#39;</span><span class="p">);</span>
+				
+				<span class="kd">var</span> <span class="nx">now</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">thisYear</span> <span class="o">=</span> <span class="nx">now</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">pageYear</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;pagedate&#39;</span><span class="p">).</span><span class="nx">getFullYear</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">y</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">pageYear</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
+				
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">YEAR_CELL</span><span class="o">,</span> <span class="s1">&#39;td&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_layers</span><span class="p">.</span><span class="nx">decade</span><span class="o">,</span>
+					<span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span> <span class="p">{</span>
+						<span class="k">if</span><span class="p">(</span><span class="nx">y</span> <span class="o">===</span> <span class="nx">thisYear</span><span class="p">)</span> <span class="p">{</span>
+							<span class="nx">Dom</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">THIS_YEAR_CELL</span><span class="p">);</span>
+						<span class="p">}</span>
+						<span class="k">else</span> <span class="p">{</span>
+							<span class="nx">Dom</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">THIS_YEAR_CELL</span><span class="p">);</span>
+						<span class="p">}</span>
+						
+						<span class="nx">el</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="p">(</span><span class="nx">y</span><span class="o">++</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">);</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Attaches layer to document and positions it</span>
+<span class="c">			* @method _attachLayer</span>
+<span class="c">			* @private</span>
+<span class="c">			* @param {HTMLElement} layer Layer container element</span>
+<span class="c">			* @param {Object} frame Layer frame</span>
+<span class="c">			*/</span>
+			<span class="nx">_attachLayer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="nx">frame</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">ctr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">oDomContainer</span><span class="o">;</span>
+				<span class="nx">ctr</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">layer</span><span class="p">);</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setXY</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="p">[</span><span class="nx">frame</span><span class="p">.</span><span class="nx">left</span><span class="o">,</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">top</span><span class="p">]);</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Shows layer, using animation if so configured</span>
+<span class="c">			* @method _showLayer</span>
+<span class="c">			* @private</span>
+<span class="c">			* @param {HTMLElement} layer Layer container element</span>
+<span class="c">			*/</span>
+			<span class="nx">_showLayer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">layer</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;_showLayer&#39;</span><span class="p">);</span>
+				
+				<span class="kd">var</span> <span class="nx">cfg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="o">;</span>
+				<span class="k">if</span><span class="p">(</span><span class="nx">Anim</span> <span class="o">&amp;&amp;</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_FADING</span><span class="p">.</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="s1">&#39;opacity&#39;</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="s1">&#39;visibility&#39;</span><span class="o">,</span> <span class="s1">&#39;visible&#39;</span><span class="p">);</span>
+					
+					<span class="kd">var</span> <span class="nx">duration</span> <span class="o">=</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_FADE_DURATION</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span><span class="o">,</span>
+						<span class="nx">anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Anim</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="p">{</span> <span class="nx">opacity</span><span class="o">:</span> <span class="p">{</span> <span class="nx">to</span><span class="o">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">}</span><span class="o">,</span> <span class="nx">duration</span><span class="o">,</span> <span class="nx">Easing</span><span class="p">.</span><span class="nx">easeNone</span><span class="p">);</span>
+					
+					<span class="nx">anim</span><span class="p">.</span><span class="nx">animate</span><span class="p">();</span>
+				<span class="p">}</span>
+				<span class="k">else</span> <span class="p">{</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="s1">&#39;visibility&#39;</span><span class="o">,</span> <span class="s1">&#39;visible&#39;</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Hides layer, using animation if so configured</span>
+<span class="c">			* @method _hideLayer</span>
+<span class="c">			* @private</span>
+<span class="c">			* @param {HTMLElement} layer Layer container element</span>
+<span class="c">			*/</span>
+			<span class="nx">_hideLayer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">layer</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;_hideLayer&#39;</span><span class="p">);</span>
+				
+				<span class="kd">var</span> <span class="nx">cfg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="o">;</span>
+				<span class="k">if</span><span class="p">(</span><span class="nx">Anim</span> <span class="o">&amp;&amp;</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_FADING</span><span class="p">.</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">duration</span> <span class="o">=</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="nx">_CONFIG</span><span class="p">.</span><span class="nx">LAYER_FADE_DURATION</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span><span class="o">,</span>
+						<span class="nx">anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Anim</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="p">{</span> <span class="nx">opacity</span><span class="o">:</span> <span class="p">{</span> <span class="nx">from</span><span class="o">:</span> <span class="mi">1</span><span class="o">,</span> <span class="nx">to</span><span class="o">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">}</span><span class="o">,</span> <span class="nx">duration</span><span class="o">,</span> <span class="nx">Easing</span><span class="p">.</span><span class="nx">easeNone</span><span class="p">)</span><span class="o">,</span>
+						<span class="nx">cal</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+					
+					<span class="nx">anim</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span>
+						<span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+							<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="s1">&#39;visibility&#39;</span><span class="o">,</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
+							<span class="nx">cal</span><span class="p">.</span><span class="nx">_nohover</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+						<span class="p">}</span>
+					<span class="p">);</span>
+					
+					<span class="nx">anim</span><span class="p">.</span><span class="nx">animate</span><span class="p">();</span>
+				<span class="p">}</span>
+				<span class="k">else</span> <span class="p">{</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">layer</span><span class="o">,</span> <span class="s1">&#39;visibility&#39;</span><span class="o">,</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_nohover</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Generates calendar label text</span>
+<span class="c">			* @method _renderLabel</span>
+<span class="c">			* @private</span>
+<span class="c">			* @returns {String} Label text</span>
+<span class="c">			*/</span>
+			<span class="nx">_renderLabel</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">switch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">MONTH</span><span class="o">:</span>
+						<span class="k">return</span> <span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">buildMonthLabel</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+						
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">YEAR</span><span class="o">:</span>
+						<span class="kd">var</span> <span class="nx">year</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;pagedate&#39;</span><span class="p">).</span><span class="nx">getFullYear</span><span class="p">()</span><span class="o">,</span>
+							<span class="nx">suffix</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;my_label_year_suffix&#39;</span><span class="p">);</span>
+						
+						<span class="k">return</span> <span class="nx">year</span> <span class="o">+</span> <span class="nx">suffix</span><span class="o">;</span>
+						
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">DECADE</span><span class="o">:</span>
+						<span class="kd">var</span> <span class="nx">year</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;pagedate&#39;</span><span class="p">).</span><span class="nx">getFullYear</span><span class="p">()</span><span class="o">,</span>
+							<span class="nx">lower</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">year</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span><span class="o">,</span>
+							<span class="nx">upper</span> <span class="o">=</span> <span class="nx">lower</span> <span class="o">+</span> <span class="mi">9</span><span class="o">,</span>
+							<span class="nx">suffix</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;my_label_year_suffix&#39;</span><span class="p">)</span><span class="o">,</span>
+							<span class="nx">delim</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;date_range_delimiter&#39;</span><span class="p">);</span>
+						
+						<span class="k">return</span> <span class="nx">lower</span> <span class="o">+</span> <span class="nx">suffix</span> <span class="o">+</span> <span class="nx">delim</span> <span class="o">+</span> <span class="nx">upper</span> <span class="o">+</span> <span class="nx">suffix</span><span class="o">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Synchronizes calendar label text (without full render)</span>
+<span class="c">			* @method _syncLabel</span>
+<span class="c">			* @private</span>
+<span class="c">			*/</span>
+			<span class="nx">_syncLabel</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;_syncLabel&#39;</span><span class="p">);</span>
+				
+				<span class="kd">var</span> <span class="nx">cal</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">UP_LINK</span><span class="o">,</span> <span class="s1">&#39;a&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">oDomContainer</span><span class="o">,</span>
+					<span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span> <span class="p">{</span>
+						<span class="k">if</span><span class="p">(</span><span class="nx">cal</span><span class="p">.</span><span class="nx">_layer</span> <span class="o">===</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">DECADE</span><span class="p">)</span> <span class="p">{</span>
+							<span class="nx">Dom</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">TOP_UP_LINK</span><span class="p">);</span>
+						<span class="p">}</span>
+						<span class="k">else</span> <span class="p">{</span>
+							<span class="nx">Dom</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">TOP_UP_LINK</span><span class="p">);</span>
+						<span class="p">}</span>
+						
+						<span class="nx">el</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">cal</span><span class="p">.</span><span class="nx">_renderLabel</span><span class="p">();</span>
+					<span class="p">}</span>
+				<span class="p">);</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Attaches DOM event listeners for calendar label and layers</span>
+<span class="c">			* @method _applyLayerListeners</span>
+<span class="c">			* @private</span>
+<span class="c">			*/</span>
+			<span class="nx">_applyLayerListeners</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">cal</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+				
+				<span class="c">// Header link</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">UP_LINK</span><span class="o">,</span> <span class="s1">&#39;a&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">oDomContainer</span><span class="o">,</span>
+					<span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">Event</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="nx">cal</span><span class="p">.</span><span class="nx">_onUpLinkClick</span><span class="o">,</span> <span class="nx">cal</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">);</span>
+				
+				<span class="c">// Year layer cells</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">MONTH_CELL</span><span class="o">,</span> <span class="s1">&#39;td&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_layers</span><span class="p">.</span><span class="nx">year</span><span class="o">,</span>
+					<span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">Event</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;mouseover&#39;</span><span class="o">,</span> <span class="nx">cal</span><span class="p">.</span><span class="nx">_onCellMouseover</span><span class="o">,</span> <span class="nx">cal</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+						<span class="nx">Event</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;mouseout&#39;</span><span class="o">,</span> <span class="nx">cal</span><span class="p">.</span><span class="nx">_onCellMouseout</span><span class="o">,</span> <span class="nx">cal</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+						<span class="nx">Event</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="nx">cal</span><span class="p">.</span><span class="nx">_onMonthCellClick</span><span class="o">,</span> <span class="nx">cal</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">);</span>
+				
+				<span class="c">// Decade layer cells</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">YEAR_CELL</span><span class="o">,</span> <span class="s1">&#39;td&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_layers</span><span class="p">.</span><span class="nx">decade</span><span class="o">,</span>
+					<span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">Event</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;mouseover&#39;</span><span class="o">,</span> <span class="nx">cal</span><span class="p">.</span><span class="nx">_onCellMouseover</span><span class="o">,</span> <span class="nx">cal</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+						<span class="nx">Event</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;mouseout&#39;</span><span class="o">,</span> <span class="nx">cal</span><span class="p">.</span><span class="nx">_onCellMouseout</span><span class="o">,</span> <span class="nx">cal</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+						<span class="nx">Event</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="nx">cal</span><span class="p">.</span><span class="nx">_onYearCellClick</span><span class="o">,</span> <span class="nx">cal</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">);</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Generates HTML for calendar label</span>
+<span class="c">			* @method buildMonthLabel</span>
+<span class="c">			* @returns {String} HTML</span>
+<span class="c">			*/</span>
+			<span class="nx">buildMonthLabel</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="p">[]</span><span class="o">,</span>
+					<span class="nx">clsTop</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_layer</span> <span class="o">===</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">DECADE</span> <span class="o">?</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">TOP_UP_LINK</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+				
+				<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;a class=&quot;&#39;</span> <span class="o">+</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">UP_LINK</span> <span class="o">+</span> <span class="nx">clsTop</span> <span class="o">+</span> <span class="s1">&#39;&quot; href=&quot;javascript:void(0);&quot;&gt;&#39;</span><span class="o">;</span>
+				<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderLabel</span><span class="p">();</span>
+				<span class="nx">html</span><span class="p">[</span><span class="nx">html</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="o">;</span>
+				
+				<span class="k">return</span> <span class="nx">html</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Render handler</span>
+<span class="c">			* @method _onRender</span>
+<span class="c">			* @private</span>
+<span class="c">			*/</span>
+			<span class="nx">_onRender</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;_onRender&#39;</span><span class="p">);</span>
+				
+				<span class="c">// Create layers</span>
+				<span class="kd">var</span> <span class="nx">frame</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_getLayerFrame</span><span class="p">()</span><span class="o">,</span>
+					<span class="nx">yearLayer</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_createLayer</span><span class="p">(</span><span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">YEAR_LAYER</span><span class="o">,</span> <span class="nx">frame</span><span class="o">,</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">YEAR</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">decadeLayer</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_createLayer</span><span class="p">(</span><span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">DECADE_LAYER</span><span class="o">,</span> <span class="nx">frame</span><span class="o">,</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">DECADE</span><span class="p">);</span>
+				
+				<span class="c">// Render layers</span>
+				<span class="nx">yearLayer</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderYearLayer</span><span class="p">();</span>
+				<span class="nx">decadeLayer</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderDecadeLayer</span><span class="p">();</span>
+				
+				<span class="c">// Attach layers</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_attachLayer</span><span class="p">(</span><span class="nx">yearLayer</span><span class="o">,</span> <span class="nx">frame</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_attachLayer</span><span class="p">(</span><span class="nx">decadeLayer</span><span class="o">,</span> <span class="nx">frame</span><span class="p">);</span>
+				
+				<span class="c">// Store DOM references</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_layers</span><span class="p">.</span><span class="nx">year</span> <span class="o">=</span> <span class="nx">yearLayer</span><span class="o">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_layers</span><span class="p">.</span><span class="nx">decade</span> <span class="o">=</span> <span class="nx">decadeLayer</span><span class="o">;</span>
+				
+				<span class="c">// Apply event listeners</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_applyLayerListeners</span><span class="p">();</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Returns current layer</span>
+<span class="c">			* @method getCurrentLayer</span>
+<span class="c">			* @returns {Number} Current layer</span>
+<span class="c">			*/</span>
+			<span class="nx">getCurrentLayer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="o">;</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Moves up one layer</span>
+<span class="c">			* @method upLayer</span>
+<span class="c">			* @returns {Number} New current layer</span>
+<span class="c">			*/</span>
+			<span class="nx">upLayer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;upLayer&#39;</span><span class="p">);</span>
+				
+				<span class="nx">switch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">MONTH</span><span class="o">:</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="o">++;</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">changePageEvent</span><span class="p">.</span><span class="nx">fire</span><span class="p">();</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_showLayer</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_layers</span><span class="p">.</span><span class="nx">year</span><span class="p">);</span>
+						<span class="k">break</span><span class="o">;</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">YEAR</span><span class="o">:</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="o">++;</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">changePageEvent</span><span class="p">.</span><span class="nx">fire</span><span class="p">();</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_showLayer</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_layers</span><span class="p">.</span><span class="nx">decade</span><span class="p">);</span>
+						<span class="k">break</span><span class="o">;</span>
+				<span class="p">}</span>
+				
+				<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="o">;</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Moves down one layer</span>
+<span class="c">			* @method downLayer</span>
+<span class="c">			* @returns {Number} New current layer</span>
+<span class="c">			*/</span>
+			<span class="nx">downLayer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;downLayer&#39;</span><span class="p">);</span>
+				
+				<span class="nx">switch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">YEAR</span><span class="o">:</span>
+						<span class="c">/* We need to render the month layer while this layer is still up,</span>
+<span class="c">							so render, then fire changePageEvent, then go down */</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">changePageEvent</span><span class="p">.</span><span class="nx">fire</span><span class="p">();</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="o">--;</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_syncLabel</span><span class="p">();</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_hideLayer</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_layers</span><span class="p">.</span><span class="nx">year</span><span class="p">);</span>
+						<span class="k">break</span><span class="o">;</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">DECADE</span><span class="o">:</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="o">--;</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">changePageEvent</span><span class="p">.</span><span class="nx">fire</span><span class="p">();</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_hideLayer</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_layers</span><span class="p">.</span><span class="nx">decade</span><span class="p">);</span>
+						<span class="k">break</span><span class="o">;</span>
+				<span class="p">}</span>
+				
+				<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="o">;</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Handles page left navigation</span>
+<span class="c">			* @method doPreviousMonthNav</span>
+<span class="c">			* @param {Object} e Event object</span>
+<span class="c">			*/</span>
+			<span class="nx">doPreviousMonthNav</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">switch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">MONTH</span><span class="o">:</span>
+						<span class="k">return</span> <span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">doPreviousMonthNav</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">YEAR</span><span class="o">:</span>
+						<span class="nx">Event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">previousYear</span><span class="p">();</span>
+						<span class="k">return</span><span class="o">;</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">DECADE</span><span class="o">:</span>
+						<span class="nx">Event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">subtractYears</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+						<span class="k">return</span><span class="o">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Handles page right navigation</span>
+<span class="c">			* @method doNextMonthNav</span>
+<span class="c">			* @param {Object} e Event object</span>
+<span class="c">			*/</span>
+			<span class="nx">doNextMonthNav</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">switch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">MONTH</span><span class="o">:</span>
+						<span class="k">return</span> <span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">doNextMonthNav</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">YEAR</span><span class="o">:</span>
+						<span class="nx">Event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">nextYear</span><span class="p">();</span>
+						<span class="k">return</span><span class="o">;</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">DECADE</span><span class="o">:</span>
+						<span class="nx">Event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">addYears</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+						<span class="k">return</span><span class="o">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Handles page change event</span>
+<span class="c">			* @method onChangePage</span>
+<span class="c">			*/</span>
+			<span class="nx">onChangePage</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;onChangePage&#39;</span><span class="p">);</span>
+				
+				<span class="nx">switch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_layer</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">MONTH</span><span class="o">:</span>
+						<span class="k">return</span> <span class="nx">MultiLayerCalendar</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">onChangePage</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">YEAR</span><span class="o">:</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_syncYearLayer</span><span class="p">();</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_syncLabel</span><span class="p">();</span>
+						<span class="k">return</span><span class="o">;</span>
+					<span class="nx">case</span> <span class="nx">_LAYERS</span><span class="p">.</span><span class="nx">DECADE</span><span class="o">:</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_syncDecadeLayer</span><span class="p">();</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">_syncLabel</span><span class="p">();</span>
+						<span class="k">return</span><span class="o">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Handles layer table cell mouseover</span>
+<span class="c">			* @method _onCellMouseover</span>
+<span class="c">			* @private</span>
+<span class="c">			* @param {Object} e Event object</span>
+<span class="c">			*/</span>
+			<span class="nx">_onCellMouseover</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_nohover</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">Event</span><span class="p">.</span><span class="nx">getTarget</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="o">,</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">HOVER_CELL</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Handles layer table cell mouseout</span>
+<span class="c">			* @method _onCellMouseout</span>
+<span class="c">			* @private</span>
+<span class="c">			* @param {Object} e Event object</span>
+<span class="c">			*/</span>
+			<span class="nx">_onCellMouseout</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">Event</span><span class="p">.</span><span class="nx">getTarget</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="o">,</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">HOVER_CELL</span><span class="p">);</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Handles header link click</span>
+<span class="c">			* @method _onUpLinkClick</span>
+<span class="c">			* @private</span>
+<span class="c">			* @param {Object} e Event object</span>
+<span class="c">			*/</span>
+			<span class="nx">_onUpLinkClick</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">Event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+				<span class="nx">Event</span><span class="p">.</span><span class="nx">getTarget</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">blur</span><span class="p">();</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">upLayer</span><span class="p">();</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Handles year layer month cell click</span>
+<span class="c">			* @method _onMonthCellClick</span>
+<span class="c">			* @private</span>
+<span class="c">			* @param {Object} e Event object</span>
+<span class="c">			*/</span>
+			<span class="nx">_onMonthCellClick</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="c">// Determine month clicked from cell HTML class</span>
+				<span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">Event</span><span class="p">.</span><span class="nx">getTarget</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">match</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/m(\d{1,2})/</span><span class="p">);</span>
+				
+				<span class="k">if</span><span class="p">(</span><span class="nx">match</span><span class="p">)</span> <span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">month</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">match</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span>
+						<span class="nx">pageDate</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;pagedate&#39;</span><span class="p">)</span><span class="o">,</span>
+						<span class="nx">cal</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+					
+					<span class="c">// Change pagedate month</span>
+					<span class="nx">pageDate</span><span class="p">.</span><span class="nx">setMonth</span><span class="p">(</span><span class="nx">month</span><span class="p">);</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">setProperty</span><span class="p">(</span><span class="s1">&#39;pagedate&#39;</span><span class="o">,</span> <span class="nx">pageDate</span><span class="p">);</span>
+					
+					<span class="c">// Kill hover temporarily to prevent flicker on render</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_nohover</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">target</span><span class="o">,</span> <span class="nx">_CLASSES</span><span class="p">.</span><span class="nx">HOVER_CELL</span><span class="p">);</span>
+					
+					<span class="c">/* Move down to month layer, but do so in a timeout so that the</span>
+<span class="c">						current event can bubble up before the render removes the</span>
+<span class="c">						event target from DOM. */</span>
+					<span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">cal</span><span class="p">.</span><span class="nx">downLayer</span><span class="p">();</span> <span class="p">}</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="c">/**</span>
+<span class="c">			* Handles decade layer year cell click</span>
+<span class="c">			* @method _onYearCellClick</span>
+<span class="c">			* @private</span>
+<span class="c">			* @param {Object} e Event Object</span>
+<span class="c">			*/</span>
+			<span class="nx">_onYearCellClick</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="c">// Determine year clicked</span>
+				<span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">Event</span><span class="p">.</span><span class="nx">getTarget</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">targetYear</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">target</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">pageDate</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">(</span><span class="s1">&#39;pagedate&#39;</span><span class="p">);</span>
+				
+				<span class="c">// Change pagedate year</span>
+				<span class="nx">pageDate</span><span class="p">.</span><span class="nx">setFullYear</span><span class="p">(</span><span class="nx">targetYear</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">setProperty</span><span class="p">(</span><span class="s1">&#39;pagedate&#39;</span><span class="o">,</span> <span class="nx">pageDate</span><span class="p">);</span>
+				
+				<span class="c">// Move down to year layer (no render)</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">downLayer</span><span class="p">();</span>
+			<span class="p">}</span><span class="o">,</span>
+			
+			<span class="nx">configNavigator</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="c">// Ignore</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">);</span>
+	
+	<span class="c">// Export</span>
+	<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;BLARGON.widget&#39;</span><span class="p">);</span>
+	<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">BLARGON</span><span class="p">.</span><span class="nx">widget</span><span class="p">.</span><span class="nx">MultiLayerCalendar</span> <span class="o">=</span> <span class="nx">MultiLayerCalendar</span><span class="o">;</span>
+	
+	<span class="c">// Register</span>
+	<span class="c">//YAHOO.register(&#39;multilayercalendar&#39;, MultiLayerCalendar, { version: &#39;0.2&#39;, build: &#39;1&#39; });</span>
+<span class="p">})();</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_multilayercalendar.html" title="multilayercalendar">multilayercalendar</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="YAHOO.BLARGON.widget.MultiLayerCalendar.html" title="YAHOO.BLARGON.widget.MultiLayerCalendar">YAHOO.BLARGON.widget.MultiLayerCalendar</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class="selected"><a href="multilayercalendar.js.html" title="multilayercalendar.js">multilayercalendar.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__applyLayerListeners", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_applyLayerListeners"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__attachLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_attachLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_buildMonthLabel", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "buildMonthLabel"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_checkLayer", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "checkLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__CLASSES", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_CLASSES"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__CONFIG_DEFAULTS", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_CONFIG_DEFAULTS"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__createLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_createLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_doNextMonthNav", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "doNextMonthNav"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_doPreviousMonthNav", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "doPreviousMonthNav"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_downLayer", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "downLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_getCurrentLayer", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "getCurrentLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__getLayerFrame", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_getLayerFrame"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__hideLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_hideLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_initEvents", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "initEvents"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__layer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_layer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property_LAYER_DECADE", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "LAYER_DECADE"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_fade_duration", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_fade_duration"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_fading", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_fading"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_height_adjust", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_height_adjust"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_initial", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_initial"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property_LAYER_MONTH", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "LAYER_MONTH"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__layers", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_layers"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__LAYERS", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_LAYERS"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_width_adjust", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_width_adjust"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property_LAYER_YEAR", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "LAYER_YEAR"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_zindex_base", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_zindex_base"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__nohover", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_nohover"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onCellMouseout", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onCellMouseout"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onCellMouseover", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onCellMouseover"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_onChangePage", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "onChangePage"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onMonthCellClick", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onMonthCellClick"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onRender", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onRender"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onUpLinkClick", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onUpLinkClick"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onYearCellClick", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onYearCellClick"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__renderDecadeLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_renderDecadeLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__renderLabel", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_renderLabel"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__renderYearLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_renderYearLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_setupConfig", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "setupConfig"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__showLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_showLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__syncDecadeLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_syncDecadeLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__syncLabel", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_syncLabel"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__syncYearLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_syncYearLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_upLayer", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "upLayer"}];
+</script>
+</body>
+</html>

@@ -1,0 +1,1715 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: multilayercalendar  YAHOO.BLARGON.widget.MultiLayerCalendar   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1248945841.55" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1248945841.55" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1248945841.55"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1248945841.55"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://blargon.net/" title="blargon">blargon</a></h1>
+        <h3>multilayercalendar&nbsp; <span class="subtitle">0.2</span></h3>
+        <a href="./index.html" title="blargon">blargon</a> 
+            &gt; <a href="./module_multilayercalendar.html" title="multilayercalendar">multilayercalendar</a>
+                 &gt; YAHOO.BLARGON.widget.MultiLayerCalendar 
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <h2>
+                        
+
+                        
+                        
+                            Class <b property="yui:name">YAHOO.BLARGON.widget.MultiLayerCalendar</b>
+                        <span class="extends">
+                           - extends <a href="YAHOO.widget.Calendar.html" title="YAHOO.widget.Calendar">YAHOO.widget.Calendar</a>
+                        </span>
+
+                    </h2>
+                    <!-- class tree goes here -->
+                    
+                
+  
+
+                    <div class="summary description" property="yui:description">
+                        The MultiLayerCalendar class implements the multi-layer calendar.
+                    </div>
+
+                        <div class="section constructor details" rel="yui:constructor" resource="#constructor">
+                        <h3 id="constructor">Constructor</h3>
+                        <div class="content">
+                            <div class="detail">
+                                <strong property="yui:name">YAHOO.BLARGON.widget.MultiLayerCalendar</strong>
+                                <code>
+                                    (
+  
+                                        
+                                                
+                                                ctr
+
+                                                , 
+                                                cfg
+                                    )
+                                </code>
+                                <div class="description">
+                                        <dl rel="yui:parameters">
+                                            <dt>Parameters:</dt>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">ctr</span>
+                                                    &lt;<span property="yui:type">String | HTMLElement</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description"> HTML container element</span>
+                                                </dd>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">cfg</span>
+                                                    &lt;<span property="yui:type">Object</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description"> Configuration attributes</span>
+                                                </dd>
+                                        </dl>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div rel="yui:properties" resource="#properties">
+                        <div class="section field details">
+                            <h3 id="properties">Properties</h3>
+                            <div class="content">
+                                    <div class="private" rel="yui:property" resource="#property__CLASSES">
+                                    <h4><a name="property__CLASSES" property="yui:name">_CLASSES</a>
+                                        - <code>private static final <span property="yui:type">Object</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            HTML classes
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:property" resource="#property__CONFIG_DEFAULTS">
+                                    <h4><a name="property__CONFIG_DEFAULTS" property="yui:name">_CONFIG_DEFAULTS</a>
+                                        - <code>private static final <span property="yui:type">Object</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Default configuration values
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:property" resource="#property__layer">
+                                    <h4><a name="property__layer" property="yui:name">_layer</a>
+                                        - <code>private <span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Current layer
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:property" resource="#property__layers">
+                                    <h4><a name="property__layers" property="yui:name">_layers</a>
+                                        - <code>private <span property="yui:type">Object</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Layer container DOM references
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:property" resource="#property__LAYERS">
+                                    <h4><a name="property__LAYERS" property="yui:name">_LAYERS</a>
+                                        - <code>private static final <span property="yui:type">Object</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Layer constants
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:property" resource="#property__nohover">
+                                    <h4><a name="property__nohover" property="yui:name">_nohover</a>
+                                        - <code>private <span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Temporarily prevents hover state on layer cells (see _onMonthCellClick)
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_LAYER_DECADE">
+                                    <h4><a name="property_LAYER_DECADE" property="yui:name">LAYER_DECADE</a>
+                                        - <code>static final <span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Decade layer
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_LAYER_MONTH">
+                                    <h4><a name="property_LAYER_MONTH" property="yui:name">LAYER_MONTH</a>
+                                        - <code>static final <span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Month layer
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_LAYER_YEAR">
+                                    <h4><a name="property_LAYER_YEAR" property="yui:name">LAYER_YEAR</a>
+                                        - <code>static final <span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Year layer
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:methods" resource="#methods">
+                        <div class="section method details">
+                            <h3 id="methods">Methods</h3>
+                            <div class="content">
+                                    <div class="private" rel="yui:method" resource="#method__applyLayerListeners">
+                                    <h4>
+                                        <a name="method__applyLayerListeners">_applyLayerListeners</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_applyLayerListeners</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Attaches DOM event listeners for calendar label and layers
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__attachLayer">
+                                    <h4>
+                                        <a name="method__attachLayer">_attachLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_attachLayer</strong>
+                                           (
+                                                
+                                                        
+                                                         layer
+                                                    
+                                                
+                                                        , 
+                                                         frame
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Attaches layer to document and positions it
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">layer</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Layer container element</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">frame</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Layer frame</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__createLayer">
+                                    <h4>
+                                        <a name="method__createLayer">_createLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_createLayer</strong>
+                                           (
+                                                
+                                                        
+                                                         classname
+                                                    
+                                                
+                                                        , 
+                                                         frame
+                                                    
+                                                
+                                                        , 
+                                                         level
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Creates new layer container
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">classname</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> HTML class name</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">frame</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Layer frame</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">level</span>
+                                                        &lt;<span property="yui:type">Number</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Layer z-index</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__getLayerFrame">
+                                    <h4>
+                                        <a name="method__getLayerFrame">_getLayerFrame</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_getLayerFrame</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Dynamically calculates frame for layer containers
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__hideLayer">
+                                    <h4>
+                                        <a name="method__hideLayer">_hideLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_hideLayer</strong>
+                                           (
+                                                
+                                                        
+                                                         layer
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Hides layer, using animation if so configured
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">layer</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Layer container element</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__onCellMouseout">
+                                    <h4>
+                                        <a name="method__onCellMouseout">_onCellMouseout</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_onCellMouseout</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Handles layer table cell mouseout
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Event object</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__onCellMouseover">
+                                    <h4>
+                                        <a name="method__onCellMouseover">_onCellMouseover</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_onCellMouseover</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Handles layer table cell mouseover
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Event object</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__onMonthCellClick">
+                                    <h4>
+                                        <a name="method__onMonthCellClick">_onMonthCellClick</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_onMonthCellClick</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Handles year layer month cell click
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Event object</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__onRender">
+                                    <h4>
+                                        <a name="method__onRender">_onRender</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_onRender</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Render handler
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__onUpLinkClick">
+                                    <h4>
+                                        <a name="method__onUpLinkClick">_onUpLinkClick</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_onUpLinkClick</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Handles header link click
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Event object</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__onYearCellClick">
+                                    <h4>
+                                        <a name="method__onYearCellClick">_onYearCellClick</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_onYearCellClick</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Handles decade layer year cell click
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Event Object</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__renderDecadeLayer">
+                                    <h4>
+                                        <a name="method__renderDecadeLayer">_renderDecadeLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_renderDecadeLayer</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Generates HTML for decade layer
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__renderLabel">
+                                    <h4>
+                                        <a name="method__renderLabel">_renderLabel</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_renderLabel</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Generates calendar label text
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__renderYearLayer">
+                                    <h4>
+                                        <a name="method__renderYearLayer">_renderYearLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_renderYearLayer</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Generates HTML for year layer
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__showLayer">
+                                    <h4>
+                                        <a name="method__showLayer">_showLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_showLayer</strong>
+                                           (
+                                                
+                                                        
+                                                         layer
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Shows layer, using animation if so configured
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">layer</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Layer container element</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__syncDecadeLayer">
+                                    <h4>
+                                        <a name="method__syncDecadeLayer">_syncDecadeLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_syncDecadeLayer</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Synchronizes decade layer (without full render)
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__syncLabel">
+                                    <h4>
+                                        <a name="method__syncLabel">_syncLabel</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_syncLabel</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Synchronizes calendar label text (without full render)
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="private" rel="yui:method" resource="#method__syncYearLayer">
+                                    <h4>
+                                        <a name="method__syncYearLayer">_syncYearLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         private 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_syncYearLayer</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Synchronizes year layer (without full render)
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_buildMonthLabel">
+                                    <h4>
+                                        <a name="method_buildMonthLabel">buildMonthLabel</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">buildMonthLabel</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Generates HTML for calendar label
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_checkLayer">
+                                    <h4>
+                                        <a name="method_checkLayer">checkLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        Boolean
+                                            <strong property="yui:name">checkLayer</strong>
+                                           (
+                                                
+                                                        
+                                                         v
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Validates layer value
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">v</span>
+                                                        &lt;<span property="yui:type">Number</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Value</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">True if valid layer value, false otherwise</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_doNextMonthNav">
+                                    <h4>
+                                        <a name="method_doNextMonthNav">doNextMonthNav</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">doNextMonthNav</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Handles page right navigation
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Event object</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_doPreviousMonthNav">
+                                    <h4>
+                                        <a name="method_doPreviousMonthNav">doPreviousMonthNav</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">doPreviousMonthNav</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Handles page left navigation
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> Event object</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_downLayer">
+                                    <h4>
+                                        <a name="method_downLayer">downLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">downLayer</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Moves down one layer
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getCurrentLayer">
+                                    <h4>
+                                        <a name="method_getCurrentLayer">getCurrentLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">getCurrentLayer</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Returns current layer
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_initEvents">
+                                    <h4>
+                                        <a name="method_initEvents">initEvents</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">initEvents</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Sets up custom events
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_onChangePage">
+                                    <h4>
+                                        <a name="method_onChangePage">onChangePage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">onChangePage</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Handles page change event
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_setupConfig">
+                                    <h4>
+                                        <a name="method_setupConfig">setupConfig</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">setupConfig</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Sets up configuration attributes
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_upLayer">
+                                    <h4>
+                                        <a name="method_upLayer">upLayer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">upLayer</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Moves up one layer
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:events" resource="#events">
+
+
+                    </div>
+
+                    <div rel="yui:attributes" resource="#configattributes">
+                        <div class="section field details">
+                            <h3 id="configattributes">Configuration Attributes</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:attribute" resource="#config_layer_fade_duration">
+                                    <h4><a name="config_layer_fade_duration">layer_fade_duration</a>
+                                        <code>- <span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Layer fade duration in seconds
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: 0.2
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_layer_fading">
+                                    <h4><a name="config_layer_fading">layer_fading</a>
+                                        <code>- <span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Enables or disables animated fading of layers
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: true
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_layer_height_adjust">
+                                    <h4><a name="config_layer_height_adjust">layer_height_adjust</a>
+                                        <code>- <span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Layer height adjustment. This increases or decreases the automatically
+computed layer height by twice the specified number of pixels. Useful
+for cross-browser adjustments or if stylization of the month table or
+table cells includes larger borders.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: 1
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_layer_initial">
+                                    <h4><a name="config_layer_initial">layer_initial</a>
+                                        <code>- <span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Initial layer to display on first render
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: MultiLayerCalendar.LAYER_MONTH
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_layer_width_adjust">
+                                    <h4><a name="config_layer_width_adjust">layer_width_adjust</a>
+                                        <code>- <span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Layer width adjustment. This increases or decreases the automatically
+computed layer width by twice the specified number of pixels. Useful
+for cross-browser adjustments or if stylization of the month table or
+table cells includes larger borders.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: 1
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_layer_zindex_base">
+                                    <h4><a name="config_layer_zindex_base">layer_zindex_base</a>
+                                        <code>- <span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Layer base z-index in stacking context of container
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: 10
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+
+                            </div>
+                        </div>
+
+                    </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_multilayercalendar.html" title="multilayercalendar">multilayercalendar</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="YAHOO.BLARGON.widget.MultiLayerCalendar.html" title="YAHOO.BLARGON.widget.MultiLayerCalendar">YAHOO.BLARGON.widget.MultiLayerCalendar</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="multilayercalendar.js.html" title="multilayercalendar.js">multilayercalendar.js</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="propertyList" class="module">
+                        <h4>Properties</h4>
+                        <ul class="content">        
+                                <li class="private"><a href="#property__CLASSES" title="_CLASSES">_CLASSES</a></li>
+                                <li class="private"><a href="#property__CONFIG_DEFAULTS" title="_CONFIG_DEFAULTS">_CONFIG_DEFAULTS</a></li>
+                                <li class="private"><a href="#property__layer" title="_layer">_layer</a></li>
+                                <li class="private"><a href="#property__layers" title="_layers">_layers</a></li>
+                                <li class="private"><a href="#property__LAYERS" title="_LAYERS">_LAYERS</a></li>
+                                <li class="private"><a href="#property__nohover" title="_nohover">_nohover</a></li>
+                                <li class=""><a href="#property_LAYER_DECADE" title="LAYER_DECADE">LAYER_DECADE</a></li>
+                                <li class=""><a href="#property_LAYER_MONTH" title="LAYER_MONTH">LAYER_MONTH</a></li>
+                                <li class=""><a href="#property_LAYER_YEAR" title="LAYER_YEAR">LAYER_YEAR</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="methodsList" class="module">
+                        <h4>Methods</h4>
+                        <ul class="content">        
+                                <li class="private"><a href="#method__applyLayerListeners" title="_applyLayerListeners">_applyLayerListeners</a></li>
+                                <li class="private"><a href="#method__attachLayer" title="_attachLayer">_attachLayer</a></li>
+                                <li class="private"><a href="#method__createLayer" title="_createLayer">_createLayer</a></li>
+                                <li class="private"><a href="#method__getLayerFrame" title="_getLayerFrame">_getLayerFrame</a></li>
+                                <li class="private"><a href="#method__hideLayer" title="_hideLayer">_hideLayer</a></li>
+                                <li class="private"><a href="#method__onCellMouseout" title="_onCellMouseout">_onCellMouseout</a></li>
+                                <li class="private"><a href="#method__onCellMouseover" title="_onCellMouseover">_onCellMouseover</a></li>
+                                <li class="private"><a href="#method__onMonthCellClick" title="_onMonthCellClick">_onMonthCellClick</a></li>
+                                <li class="private"><a href="#method__onRender" title="_onRender">_onRender</a></li>
+                                <li class="private"><a href="#method__onUpLinkClick" title="_onUpLinkClick">_onUpLinkClick</a></li>
+                                <li class="private"><a href="#method__onYearCellClick" title="_onYearCellClick">_onYearCellClick</a></li>
+                                <li class="private"><a href="#method__renderDecadeLayer" title="_renderDecadeLayer">_renderDecadeLayer</a></li>
+                                <li class="private"><a href="#method__renderLabel" title="_renderLabel">_renderLabel</a></li>
+                                <li class="private"><a href="#method__renderYearLayer" title="_renderYearLayer">_renderYearLayer</a></li>
+                                <li class="private"><a href="#method__showLayer" title="_showLayer">_showLayer</a></li>
+                                <li class="private"><a href="#method__syncDecadeLayer" title="_syncDecadeLayer">_syncDecadeLayer</a></li>
+                                <li class="private"><a href="#method__syncLabel" title="_syncLabel">_syncLabel</a></li>
+                                <li class="private"><a href="#method__syncYearLayer" title="_syncYearLayer">_syncYearLayer</a></li>
+                                <li class=""><a href="#method_buildMonthLabel" title="buildMonthLabel">buildMonthLabel</a></li>
+                                <li class=""><a href="#method_checkLayer" title="checkLayer">checkLayer</a></li>
+                                <li class=""><a href="#method_doNextMonthNav" title="doNextMonthNav">doNextMonthNav</a></li>
+                                <li class=""><a href="#method_doPreviousMonthNav" title="doPreviousMonthNav">doPreviousMonthNav</a></li>
+                                <li class=""><a href="#method_downLayer" title="downLayer">downLayer</a></li>
+                                <li class=""><a href="#method_getCurrentLayer" title="getCurrentLayer">getCurrentLayer</a></li>
+                                <li class=""><a href="#method_initEvents" title="initEvents">initEvents</a></li>
+                                <li class=""><a href="#method_onChangePage" title="onChangePage">onChangePage</a></li>
+                                <li class=""><a href="#method_setupConfig" title="setupConfig">setupConfig</a></li>
+                                <li class=""><a href="#method_upLayer" title="upLayer">upLayer</a></li>
+                        </ul>
+                    </div>
+
+
+                    <div id="configList" class="module">
+                        <h4>Configuration Attributes</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#config_layer_fade_duration" title="layer_fade_duration">layer_fade_duration</a></li>
+                                <li class=""><a href="#config_layer_fading" title="layer_fading">layer_fading</a></li>
+                                <li class=""><a href="#config_layer_height_adjust" title="layer_height_adjust">layer_height_adjust</a></li>
+                                <li class=""><a href="#config_layer_initial" title="layer_initial">layer_initial</a></li>
+                                <li class=""><a href="#config_layer_width_adjust" title="layer_width_adjust">layer_width_adjust</a></li>
+                                <li class=""><a href="#config_layer_zindex_base" title="layer_zindex_base">layer_zindex_base</a></li>
+                        </ul>
+                    </div>
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__applyLayerListeners", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_applyLayerListeners"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__attachLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_attachLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_buildMonthLabel", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "buildMonthLabel"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_checkLayer", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "checkLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__CLASSES", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_CLASSES"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__CONFIG_DEFAULTS", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_CONFIG_DEFAULTS"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__createLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_createLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_doNextMonthNav", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "doNextMonthNav"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_doPreviousMonthNav", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "doPreviousMonthNav"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_downLayer", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "downLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_getCurrentLayer", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "getCurrentLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__getLayerFrame", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_getLayerFrame"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__hideLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_hideLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_initEvents", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "initEvents"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__layer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_layer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property_LAYER_DECADE", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "LAYER_DECADE"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_fade_duration", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_fade_duration"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_fading", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_fading"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_height_adjust", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_height_adjust"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_initial", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_initial"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property_LAYER_MONTH", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "LAYER_MONTH"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__layers", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_layers"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__LAYERS", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_LAYERS"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_width_adjust", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_width_adjust"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property_LAYER_YEAR", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "LAYER_YEAR"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#config_layer_zindex_base", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "config", "name": "layer_zindex_base"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#property__nohover", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "property", "name": "_nohover"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onCellMouseout", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onCellMouseout"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onCellMouseover", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onCellMouseover"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_onChangePage", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "onChangePage"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onMonthCellClick", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onMonthCellClick"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onRender", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onRender"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onUpLinkClick", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onUpLinkClick"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__onYearCellClick", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_onYearCellClick"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__renderDecadeLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_renderDecadeLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__renderLabel", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_renderLabel"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__renderYearLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_renderYearLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_setupConfig", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "setupConfig"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__showLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_showLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__syncDecadeLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_syncDecadeLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__syncLabel", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_syncLabel"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method__syncYearLayer", "access": "private", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "_syncYearLayer"}, {"url": "YAHOO.BLARGON.widget.MultiLayerCalendar.html#method_upLayer", "access": "", "host": "YAHOO.BLARGON.widget.MultiLayerCalendar", "type": "method", "name": "upLayer"}];
+</script>
+</body>
+</html>

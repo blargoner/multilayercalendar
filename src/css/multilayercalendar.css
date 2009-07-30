@@ -1,0 +1,73 @@
+/**
+* Multi-Layer Calendar CSS
+*/
+
+/* Core */
+.yui-calcontainer .layer {
+	position:absolute;
+	margin:0;
+	border:0;
+	padding:0;
+}
+.yui-calcontainer .layer table {
+	width:100%;
+	height:100%;
+	margin:0;
+	border:0;
+	border-collapse:collapse;
+	border-spacing:0;
+	*border-collapse:separate;
+	*border-spacing:1px;
+	padding:0;
+	table-layout:fixed;
+}
+.yui-calcontainer .layer table td {
+	width:25%;
+	text-align:center;
+	white-space:nowrap;
+	cursor:pointer;
+}
+
+/* Skin */
+.yui-skin-sam .yui-calendar .calheader .uplink:link,
+.yui-skin-sam .yui-calendar .calheader .uplink:active,
+.yui-skin-sam .yui-calendar .calheader .uplink:visited {
+	text-decoration:none;
+	color:#0066cc;
+}
+.yui-skin-sam .yui-calendar .calheader .uplink:hover {
+	text-decoration:underline;
+}
+
+.yui-skin-sam .yui-calendar .calheader .topuplink:link,
+.yui-skin-sam .yui-calendar .calheader .topuplink:active,
+.yui-skin-sam .yui-calendar .calheader .topuplink:visited,
+.yui-skin-sam .yui-calendar .calheader .topuplink:hover {
+	text-decoration:none;
+	cursor:default;
+}
+
+.yui-skin-sam .yui-calcontainer .layer {
+	font-family:sans-serif;
+	font-weight:bold;
+	font-size:100%;
+}
+.yui-skin-sam .yui-calcontainer .layer table {
+	*background:#cccccc;
+}
+.yui-skin-sam .yui-calcontainer .layer table td {
+	border:1px solid #cccccc;
+	*border:0;
+	background:#ffffff;
+	color:#0066cc;
+}
+.yui-skin-sam .yui-calcontainer .layer table td.current {
+	color:#000000;
+}
+.yui-skin-sam .yui-calcontainer .layer table td.ood {
+	background:#f2f2f2;
+}
+.yui-skin-sam .yui-calcontainer .layer table td.hover  {
+	background:#426FD9;
+	color:#ffffff;
+}
